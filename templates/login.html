@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Login</h3>
+
+<form method="POST">
+    Username:<br>
+    <input name="username"><br><br>
+
+    Password:<br>
+    <input type="password" name="password"><br><br>
+
+    CAPTCHA: <b>{{ captcha }}</b><br>
+    <input name="captcha"><br><br>
+
+    <button type="submit">Login</button>
+</form>
+
+<p style="color:red">{{ error }}</p>
+
+<hr>
+<a href="/register">Create New User</a>
+
+{% endblock %}

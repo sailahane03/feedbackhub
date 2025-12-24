@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Admin Dashboard</h3>
+
+<h4>Users</h4>
+<ul>
+{% for u in users %}
+<li>{{ u[0] }} | {{ u[1] }} | {{ u[2] }}</li>
+{% endfor %}
+</ul>
+
+<h4>Login Activity</h4>
+<ul>
+{% for l in logins %}
+<li>{{ l[0] }} logged in at {{ l[1] }}</li>
+{% endfor %}
+</ul>
+
+<h4>Feedback</h4>
+<ul>
+{% for f in feedbacks %}
+<li>{{ f[0] }} | {{ f[1] }} | {{ f[2] }} | {{ f[3] }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

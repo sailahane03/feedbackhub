@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Submit Feedback</h3>
+
+<form method="POST">
+    Subject:<br>
+    <input name="subject"><br><br>
+
+    Rating:<br>
+    <select name="rating">
+        <option>Not Satisfied</option>
+        <option>Satisfied</option>
+        <option>Very Satisfied</option>
+        <option>Perfect</option>
+    </select><br><br>
+
+    Comments:<br>
+    <textarea name="comments"></textarea><br><br>
+
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}

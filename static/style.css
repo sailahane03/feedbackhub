@@ -1,0 +1,50 @@
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #eef1f4;
+}
+
+header {
+    background: #1f3a5f;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+main {
+    background: white;
+    width: 85%;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+h2, h3 {
+    color: #1f3a5f;
+}
+
+.office-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.office-table th {
+    background: #dce3ec;
+    padding: 8px;
+    border: 1px solid #bbb;
+}
+
+.office-table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+.office-table tr:nth-child(even) {
+    background: #f7f9fb;
+}
+
+.hash {
+    font-family: monospace;
+    font-size: 12px;
+    color: #444;
+}
