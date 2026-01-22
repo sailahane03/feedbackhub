@@ -1,18 +1,55 @@
 pipeline {
   agent any
+
   environment {
-    // Required for a Semgrep AppSec Platform-connected scan:
     SEMGREP_APP_TOKEN = credentials('SEMGREP_APP_TOKEN')
   }
+
   stages {
-    stage('semgrep-scan') {
+
+    stage('Semgrep Scan') {
       steps {
-        sh '''docker pull semgrep/semgrep && \
-            docker run \
+        sh '''
+          docker pull semgrep/semgrep
+
+          docker run --rm \
             -e SEMGREP_APP_TOKEN=$SEMGREP_APP_TOKEN \
-            -v "$(pwd):$(pwd)" --workdir $(pwd) \
-            semgrep/semgrep semgrep ci '''
+            -v "$(pwd):$(pwd)" \
+            -w "$(pwd)" \
+            semgrep/semgrep semgrep ci \
+              --json > semgrep-results.json
+        '''
       }
+    }
+
+    stage('Risk Classification') {
+      steps {
+        sh '''
+          echo "===== Semgrep Risk Summary ====="
+
+          HIGH=$(jq '[.results[] | select(.extra.severity=="ERROR")] | length' semgrep-results.json)
+          MEDIUM=$(jq '[.results[] | select(.extra.severity=="WARNING")] | length' semgrep-results.json)
+          LOW=$(jq '[.results[] | select(.extra.severity=="INFO")] | length' semgrep-results.json)
+
+          echo "High Risk Findings   : $HIGH"
+          echo "Medium Risk Findings : $MEDIUM"
+          echo "Low Risk Findings    : $LOW"
+
+          echo "================================"
+
+          # Optional: Fail build if High risk issues exist
+          if [ "$HIGH" -gt 0 ]; then
+            echo " High risk vulnerabilities detected!"
+            exit 1
+          fi
+        '''
+      }
+    }
+  }
+
+  post {
+    always {
+      archiveArtifacts artifacts: 'semgrep-results.json', fingerprint: true
     }
   }
 }
