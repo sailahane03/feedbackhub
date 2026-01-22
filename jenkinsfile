@@ -1,0 +1,18 @@
+pipeline {
+  agent any
+  environment {
+    // Required for a Semgrep AppSec Platform-connected scan:
+    SEMGREP_APP_TOKEN = credentials('SEMGREP_APP_TOKEN')
+  }
+  stages {
+    stage('semgrep-scan') {
+      steps {
+        sh '''docker pull semgrep/semgrep && \
+            docker run \
+            -e SEMGREP_APP_TOKEN=$SEMGREP_APP_TOKEN \
+            -v "$(pwd):$(pwd)" --workdir $(pwd) \
+            semgrep/semgrep semgrep ci '''
+      }
+    }
+  }
+}
